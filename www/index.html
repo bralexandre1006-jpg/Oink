@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <meta name="color-scheme" content="dark">
-<title>Écos</title>
+<title>Oink</title>
 <style>
 @font-face{font-family:Inter;src:url(fonts/inter-500.woff2) format("woff2");font-weight:500;font-display:block}
 @font-face{font-family:Inter;src:url(fonts/inter-600.woff2) format("woff2");font-weight:600;font-display:block}
@@ -45,10 +45,10 @@ svg{display:block}
 /* ---------- lancement ---------- */
 #splash{position:fixed;inset:0;z-index:100;background:#000;display:grid;place-items:center;transition:opacity .3s ease,transform .3s ease}
 #splash.out{opacity:0;transform:scale(1.05);pointer-events:none}
-#splashLogo{width:112px;height:112px;position:relative}
+#splashLogo{width:136px;height:125px;position:relative}
 #splashLogo svg{width:100%;height:100%;overflow:visible}
-#eShape{transform-origin:50% 100%;transform-box:fill-box}
-.sbar{transform-origin:50% 100%;transform-box:fill-box;transform:scaleY(0)}
+#pig{transform-origin:50% 100%;transform-box:fill-box}
+#coin{transform-box:fill-box;transform-origin:50% 50%;opacity:0}
 
 /* ---------- en-tête ---------- */
 #hdr{position:fixed;left:0;right:0;top:0;z-index:15;background:var(--bg);padding:calc(var(--sat) + 10px) 20px 10px;display:flex;align-items:center;gap:12px;min-height:calc(var(--sat) + 60px);border-bottom:1px solid transparent;transition:border-color .2s}
@@ -320,12 +320,15 @@ button.setRow:active{opacity:.55}
 
 <div id="splash">
   <div id="splashLogo">
-    <svg viewBox="0 0 100 100">
-      <g id="eShape"><path fill="url(#gEw)" d="M6 8 C11 8 13 11 13 16 L13 78 C13 84 10 89 6 93 L42 62 C36 63 31 66 27 70 L27 55 L56 55 L67 42 L27 42 L27 23 L64 23 L74 8 Z"/></g>
-      <polygon class="sbar" fill="url(#gBw)" points="12,93 23,85 23,93"/>
-      <polygon class="sbar" fill="url(#gBw)" points="27,93 27,82 41,71 41,93"/>
-      <rect class="sbar" fill="url(#gBw)" x="45" y="64" width="14" height="29"/>
-      <rect class="sbar" fill="url(#gBw)" x="63" y="50" width="14" height="43"/>
+    <svg viewBox="300 300 640 590" fill="none" stroke="#fff" stroke-width="23" stroke-linecap="round" stroke-linejoin="round">
+      <defs><clipPath id="slotClip"><rect x="300" y="0" width="640" height="512"/></clipPath></defs>
+      <g clip-path="url(#slotClip)"><rect id="coin" x="572" y="296" width="86" height="30" rx="15" fill="#E8B44C" stroke="none"/></g>
+      <g id="pig">
+        <path d="M405,573 C440,505 530,453 630,453 C655,453 680,460 697,470 C730,430 775,412 815,412 L797,512 C825,535 845,558 855,580 L885,580 Q905,580 905,600 L905,672 Q905,692 885,692 L848,692 C830,725 808,750 780,768 L766,850 L700,850 L686,795 C640,803 600,803 557,795 L541,850 L478,850 L464,770 C420,732 397,690 397,632 C397,610 400,590 405,573 Z"/>
+        <path d="M405,573 C375,580 338,565 336,535 C334,505 365,494 385,505 C400,515 395,545 372,540"/>
+        <path id="slot" d="M537,522 C590,497 640,497 693,522"/>
+        <circle cx="780" cy="582" r="15" fill="#fff" stroke="none"/>
+      </g>
     </svg>
   </div>
 </div>
@@ -403,7 +406,7 @@ button.setRow:active{opacity:.55}
     <button class="setRow red" id="resetBtn"><span class="l">Tout effacer</span></button>
     <input type="file" id="importFile" style="display:none">
   </div>
-  <div class="ver">Écos · v7.0</div>
+  <div class="ver">Oink · v7.1</div>
 </section>
 
 <div id="navWrap">
@@ -927,10 +930,10 @@ async function shareFile(name,data,mime,title){
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:mime}));a.download=name;a.click();fx('ok','success');
 }
 const csvCell=v=>{v=String(v??'');return /[;"\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
-$('#exportJson').addEventListener('click',()=>{fx('tap','light');shareFile('ecos-sauvegarde-'+todayISO()+'.json',JSON.stringify({app:'ecos',v:1,tx:db.tx,cats:db.cats},null,1),'application/json','Sauvegarde Écos')});
+$('#exportJson').addEventListener('click',()=>{fx('tap','light');shareFile('ecos-sauvegarde-'+todayISO()+'.json',JSON.stringify({app:'ecos',v:1,tx:db.tx,cats:db.cats},null,1),'application/json','Sauvegarde Oink')});
 $('#exportCsv').addEventListener('click',()=>{fx('tap','light');
   const rows=[['Date','Type','Montant','Catégorie','Note']].concat(sorted().reverse().map(t=>[t.date,t.type==='income'?'Entrée':'Sortie',t.amount.toFixed(2).replace('.',','),catById(t.cat).name,t.note||'']));
-  shareFile('ecos-'+todayISO()+'.csv','﻿'+rows.map(r=>r.map(csvCell).join(';')).join('\r\n'),'text/csv','Export Écos');
+  shareFile('ecos-'+todayISO()+'.csv','﻿'+rows.map(r=>r.map(csvCell).join(';')).join('\r\n'),'text/csv','Export Oink');
 });
 function parseCSV(text){
   text=text.replace(/^﻿/,'');const h0=text.split('\n')[0],sep=(h0.match(/;/g)||[]).length>=(h0.match(/,/g)||[]).length?';':',';
@@ -963,7 +966,7 @@ $('#importFile').addEventListener('change',e=>{external=false;const f=e.target.f
       const t=String(r.result);let d;
       if(/^\s*[\[{]/.test(t)){d=JSON.parse(t);if(!Array.isArray(d.tx)||!Array.isArray(d.cats))throw 0}else d=csvToData(t);
       pendingImport=d;$('#impInfo').textContent=plural(d.tx.length,'mouvement')+' trouvé'+(d.tx.length>1?'s':'');$('#impSub').textContent=f.name;showSheet('#importSheet');
-    }catch(_){info('Fichier non reconnu','Choisis une sauvegarde Écos (.json) ou un tableur .csv avec les colonnes Date, Type, Montant, Catégorie.')}};
+    }catch(_){info('Fichier non reconnu','Choisis une sauvegarde Oink (.json) ou un tableur .csv avec les colonnes Date, Type, Montant, Catégorie.')}};
   r.readAsText(f);e.target.value=''});
 $('#impMerge').addEventListener('click',()=>{const d=pendingImport;if(!d)return;
   const key=t=>[t.date,t.type,t.amount,t.note||''].join('|'),have=new Set(db.tx.map(key)),ids=new Set(db.tx.map(t=>t.id));
@@ -1012,7 +1015,7 @@ function autoRecap(){
 /* ================= NOTIFICATIONS ANDROID ================= */
 const LN=()=>native?plug('LocalNotifications'):null;
 const N_REMIND=101,N_RECAP=201;
-const REMIND_TXT=['Petit point compta ? Note tes dépenses du jour.','2 minutes pour tes comptes ?','Tes dépenses t\'attendent dans Écos.','Garde le contrôle : ajoute tes derniers mouvements.'];
+const REMIND_TXT=['Petit point compta ? Note tes dépenses du jour.','2 minutes pour tes comptes ?','Tes dépenses t\'attendent dans Oink.','Garde le contrôle : ajoute tes derniers mouvements.'];
 async function notifPerm(ask){const L=LN();if(!L)return false;try{let p=await L.checkPermissions();if(p.display!=='granted'&&ask)p=await L.requestPermissions();return p.display==='granted'}catch(e){return false}}
 let syncT;function scheduleSync(){clearTimeout(syncT);syncT=setTimeout(syncNotifs,500)}
 async function syncNotifs(){
@@ -1020,10 +1023,10 @@ async function syncNotifs(){
   try{
     await L.cancel({notifications:[{id:N_REMIND},{id:N_RECAP}]});
     if(!await notifPerm(false))return;
-    try{await L.createChannel({id:'ecos',name:'Écos',description:'Rappels et bilans',importance:4,vibration:true})}catch(e){}
+    try{await L.createChannel({id:'ecos',name:'Oink',description:'Rappels et bilans',importance:4,vibration:true})}catch(e){}
     const list=[];
     if(db.remind.on){const[h,mi]=db.remind.time.split(':').map(Number),on=db.remind.freq==='weekly'?{weekday:1,hour:h,minute:mi}:{hour:h,minute:mi};
-      list.push({id:N_REMIND,title:'Écos',body:REMIND_TXT[Math.floor(Math.random()*REMIND_TXT.length)],channelId:'ecos',smallIcon:'ic_stat_ecos',iconColor:'#8B7CF6',autoCancel:true,schedule:{on,allowWhileIdle:true},extra:{type:'remind'}})}
+      list.push({id:N_REMIND,title:'Oink',body:REMIND_TXT[Math.floor(Math.random()*REMIND_TXT.length)],channelId:'ecos',smallIcon:'ic_stat_ecos',iconColor:'#8B7CF6',autoCancel:true,schedule:{on,allowWhileIdle:true},extra:{type:'remind'}})}
     if(db.recapNotif){const n=new Date(),y=n.getFullYear(),m=n.getMonth(),s=sums(inMonth(y,m)),[py,pm]=shiftMonth(y,m,-1),p=sums(inMonth(py,pm));
       const pc=pctChange(s.exp,p.exp),cmp=pc===null||!isFinite(pc)?'':` (${pc>0?'+':''}${pc.toFixed(0)} % vs ${MONTHS[pm]})`;
       list.push({id:N_RECAP,title:`Ton bilan ${de(MONTHS[m])} est prêt`,body:`${money(s.exp)} dépensés${cmp} · solde ${signed(s.bal)}. Touche pour voir le détail.`,channelId:'ecos',smallIcon:'ic_stat_ecos',iconColor:'#8B7CF6',autoCancel:true,schedule:{at:new Date(y,m+1,1,9,0,0),allowWhileIdle:true},extra:{type:'recap'}})}
@@ -1033,7 +1036,7 @@ async function syncNotifs(){
 let pendingAction=null;
 if(LN())LN().addListener('localNotificationActionPerformed',a=>{pendingAction=a&&a.notification&&a.notification.extra&&a.notification.extra.type;if(ready&&!locked)runPending()});
 function runPending(){const t=pendingAction;pendingAction=null;if(t==='recap'){db.lastRecap='';autoRecap()}else if(t==='remind')setTimeout(()=>openTx(null),350)}
-async function needNotifs(){if(await notifPerm(true))return true;info('Notifications bloquées','Autorise les notifications pour Écos dans les paramètres Android.');return false}
+async function needNotifs(){if(await notifPerm(true))return true;info('Notifications bloquées','Autorise les notifications pour Oink dans les paramètres Android.');return false}
 $('#swRemind').addEventListener('click',async()=>{if(!db.remind.on&&native&&!await needNotifs())return;db.remind.on=!db.remind.on;save();renderSet();fx('tap','medium')});
 $('#swRecap').addEventListener('click',async()=>{if(!db.recapNotif&&native&&!await needNotifs())return;db.recapNotif=!db.recapNotif;save();renderSet();fx('tap','medium')});
 $('#remindTime').addEventListener('change',e=>{if(e.target.value){db.remind.time=e.target.value;save();fx('tap','light')}});
@@ -1042,7 +1045,7 @@ $('#remindTime').addEventListener('change',e=>{if(e.target.value){db.remind.time
 const BIO=()=>native?plug('NativeBiometric'):null;
 let locked=false,ready=false,hiddenAt=0,trying=false,firstOpen=true;
 async function bioAvailable(){const B=BIO();if(!B)return false;try{const r=await B.isAvailable({useFallback:false});return !!r.isAvailable}catch(e){return false}}
-async function bioCheck(){const B=BIO();if(!B)return true;try{await B.verifyIdentity({title:'Déverrouiller Écos',subtitle:'Utilise ton empreinte',negativeButtonText:'Annuler'});return true}catch(e){return false}}
+async function bioCheck(){const B=BIO();if(!B)return true;try{await B.verifyIdentity({title:'Déverrouiller Oink',subtitle:'Utilise ton empreinte',negativeButtonText:'Annuler'});return true}catch(e){return false}}
 async function lockApp(){
   if(locked)return;locked=true;hideSheet(true);
   const L=$('#lock');L.classList.remove('out');L.classList.add('on');$('#lockMsg').textContent='Touche pour déverrouiller';
@@ -1092,17 +1095,20 @@ if(App&&native){
 }
 syncNotifs();
 
-/* ================= LANCEMENT : le E descend au centre ================= */
+/* ================= LANCEMENT : le cochon tombe, une pièce entre dans la fente ================= */
 function splash(){
-  const e=$('#eShape'),fall=window.innerHeight*.55,D=480,EZ='cubic-bezier(.16,.84,.3,1)';
-  e.animate([{transform:`translateY(${-fall}px)`,opacity:0},{opacity:1,offset:.3},{transform:'none',opacity:1}],{duration:D,easing:EZ,fill:'both'});
-  setTimeout(()=>{S.thud(.7);vib('medium')},D*.55);
-  $$('.sbar').forEach((b,i)=>b.animate([{transform:'scaleY(0)'},{transform:'scaleY(1)'}],{duration:280,delay:D-120+i*55,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'}));
+  const pig=$('#pig'),coin=$('#coin'),fall=window.innerHeight*.55,D=480,EZ='cubic-bezier(.16,.84,.3,1)';
+  pig.animate([{transform:`translateY(${-fall}px)`,opacity:0},{opacity:1,offset:.3},{transform:'translateY(0) scale(1,1)',offset:.78},{transform:'scale(1.06,.92)',offset:.88},{transform:'none',opacity:1}],{duration:D+80,easing:EZ,fill:'both'});
+  setTimeout(()=>{S.thud(.7);vib('medium')},D*.6);
+  const C=D+40;
+  coin.animate([{transform:'translateY(-90px)',opacity:0},{opacity:1,offset:.25},{transform:'translateY(215px)',opacity:1}],{duration:460,delay:C,easing:'cubic-bezier(.5,0,.9,.6)',fill:'both'});
+  setTimeout(()=>{tone(1320,.12,'sine',.08);tone(1760,.18,'sine',.06,.05);vib('light');
+    pig.animate([{transform:'none'},{transform:'scale(1.04,.97)'},{transform:'none'}],{duration:220,easing:'ease-out'})},C+410);
   setTimeout(()=>{
     ready=true;
     if(db.lock&&native)lockApp();else afterUnlock();
     $('#splash').classList.add('out');setTimeout(()=>$('#splash').remove(),400);
-  },D+480);
+  },C+760);
 }
 document.addEventListener('touchstart',()=>ac(),{once:true,passive:true});
 setTitle();

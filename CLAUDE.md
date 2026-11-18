@@ -1,14 +1,15 @@
-# CLAUDE.md — Écos
+# CLAUDE.md — Oink (ex-Écos)
 
 ## Informations du projet (vérifiées dans le dépôt)
-- **Nom** : Écos — gestion des dépenses (version affichée : `Écos · vX.Y` dans `www/index.html`)
+- **Nom** : Oink (anciennement Écos) — gestion des dépenses (version affichée : `Oink · vX.Y` dans `www/index.html`)
 - **Stack** : un seul fichier `www/index.html` (HTML/CSS/JS vanilla) + Capacitor 8 → APK Android. Plugins : app, filesystem, haptics, local-notifications, share, capgo native-biometric.
 - **applicationId** : `be.alexandrebrun.ecos` (`capacitor.config.json`)
 - **Workflow** : `.github/workflows/blank.yml` (déclenché sur push `main` ou manuellement). `android/` n'est pas versionné : régénéré à chaque build via `npx cap add android` + `scripts/patch-android.js`.
 - **Signature** : keystore `android-signing/ecos-release.jks`, alias `ecos`, mot de passe via secret GitHub `KEYSTORE_PASSWORD` (store et key). Empreinte SHA-256 attendue : `58:A5:8F:91:E2:89:14:0D:F4:A6:DD:71:B7:3A:C8:12:D9:C9:34:9C:99:B3:C0:CC:0A:01:67:AC:3B:0F:4E:25`.
-- **Versions** : `versionCode` = `github.run_number`, `versionName` = `1.0.<run_number>`. Version de l'app à incrémenter manuellement dans la chaîne `Écos · vX.Y` de `www/index.html`.
-- **Livraison** : APK publié en GitHub Release (tag `v1.0.<run>`, asset `Ecos-vX.Y-build<run>.apk`) + artifact Actions.
+- **Versions** : `versionCode` = `github.run_number`, `versionName` = `1.0.<run_number>`. Version de l'app à incrémenter manuellement dans la chaîne `Oink · vX.Y` de `www/index.html`.
+- **Livraison** : APK publié en GitHub Release (tag `v1.0.<run>`, asset `Oink-vX.Y-build<run>.apk`) + artifact Actions.
 - **Données locales** : `localStorage` clé `ecos_v1` (objet `db` : `tx`, `cats`, `budget`, réglages…). Fonctions `load()` / `save()`. Export/import manuel via Filesystem/Share.
+- **Héritage Écos à conserver** : clé `ecos_v1`, canal de notification `ecos`, icône `ic_stat_ecos`, keystore `ecos-release.jks`, `app:'ecos'` dans les sauvegardes JSON.
 
 ## Points sensibles propres à ce dépôt
 - Ne jamais changer la clé `ecos_v1`, ni `server.hostname` / `androidScheme` de Capacitor : les données deviendraient inaccessibles.
