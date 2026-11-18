@@ -297,9 +297,9 @@ button.setRow:active{opacity:.55}
 
 /* ================= LIQUID GLASS ================= */
 :root{--bg:#05050a;--muted:rgba(235,235,245,.58);--faint:rgba(235,235,245,.34);--line:rgba(255,255,255,.06);--red:#ff7a7a;--green:#4ade80;
-  --gl:linear-gradient(160deg,rgba(255,255,255,.105),rgba(255,255,255,.035) 45%,rgba(255,255,255,.055));--blur:blur(26px) saturate(170%);
+  --gl:linear-gradient(160deg,rgba(255,255,255,.11),rgba(255,255,255,.045) 45%,rgba(255,255,255,.06));--blur:blur(26px) saturate(170%);
   --ring:inset 0 0 0 1px rgba(255,255,255,.12),inset 0 1px 0 rgba(255,255,255,.2);--drop:0 10px 30px rgba(0,0,0,.32);
-  --glD:linear-gradient(160deg,rgba(40,36,60,.8),rgba(16,16,26,.88))}
+  --glD:linear-gradient(160deg,#25222f,#15151c)}
 html,body{background:var(--bg)}
 #bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 #bg i{position:absolute;border-radius:50%}
@@ -320,15 +320,16 @@ html,body{background:var(--bg)}
 .bgs button:active{transform:scale(.92)}
 .bgs button.on{box-shadow:0 0 0 2px var(--bg),0 0 0 4px #fff}
 .bgs .ic{width:18px;height:18px}
-.glass,.card,.seg,#nav,.period button,.ib,.search{background:var(--gl);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:var(--ring),var(--drop)}
+.glass,.card,.seg,#nav,.period button,.ib,.search{background:var(--gl);box-shadow:var(--ring)}
+#nav{background:rgba(28,28,38,.82)}
 .screen{padding-top:calc(var(--sat) + 72px)}
 #hdr{background:linear-gradient(to bottom,rgba(5,5,10,.82),rgba(5,5,10,0));border-bottom:none;min-height:calc(var(--sat) + 66px);transition:background .25s}
-#hdr.line{background:rgba(10,10,18,.45);-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);box-shadow:0 1px 0 rgba(255,255,255,.06)}
+#hdr.line{background:rgba(10,10,16,.9);box-shadow:0 1px 0 rgba(255,255,255,.06)}
 #htitle{font-size:30px;letter-spacing:-.035em}
 #htitle::first-letter{text-transform:uppercase}
 .ib{width:44px;height:44px;border-radius:50%;color:var(--text)}
 .ib:active{background:rgba(255,255,255,.16)}
-.ib.on{background:rgba(255,255,255,.2);box-shadow:var(--ring),0 0 18px color-mix(in srgb,var(--acc) 45%,transparent)}
+.ib.on{background:rgba(255,255,255,.2)}
 .card{border-radius:26px;padding:4px 16px}
 .card.box{padding:16px}
 .sec{margin:24px 6px 10px}
@@ -343,15 +344,15 @@ html,body{background:var(--bg)}
 .io .v{font-size:19px;font-weight:700;margin-top:4px}
 .bud{margin-top:4px}
 .budBar{height:10px;border-radius:6px;background:rgba(255,255,255,.08);box-shadow:inset 0 1px 2px rgba(0,0,0,.4);overflow:visible}
-.budBar i{border-radius:6px;box-shadow:0 0 14px color-mix(in srgb,var(--acc) 55%,transparent)}
+.budBar i{border-radius:6px}
 .budTop{margin-top:10px;font-size:12.5px}
 .seg{border-radius:20px;padding:4px}
 .seg button{border-radius:16px;height:38px}
 .seg .knob{top:4px;bottom:4px;left:4px;border-radius:16px;background:rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
 .seg.sm button{height:34px;padding:0 14px}
-.seg.acc .knob{background:var(--acc);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 0 16px color-mix(in srgb,var(--acc) 45%,transparent)}
-.sheet .seg,.card .seg,.sheet .card{background:rgba(255,255,255,.06);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
-.av{width:42px;height:42px;border-radius:14px;font-size:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
+.seg.acc .knob{background:var(--acc)}
+.sheet .seg,.card .seg,.sheet .card{background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.av{width:42px;height:42px;border-radius:14px;font-size:18px;}
 .row{min-height:62px}
 .swipe .row{background:none}
 .swipe.swiping .row{background:rgba(22,22,32,.96)}
@@ -361,7 +362,7 @@ html,body{background:var(--bg)}
 .dayHead{font-size:12.5px;font-weight:600;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;margin:20px 8px 8px}
 #s-stats .seg:not(.sm){margin-bottom:12px}
 .donutCard{display:flex;align-items:center;gap:18px;padding:20px}
-.donut{width:128px;height:128px;margin:0;flex-shrink:0;filter:drop-shadow(0 0 10px color-mix(in srgb,var(--acc) 30%,transparent))}
+.donut{width:128px;height:128px;margin:0;flex-shrink:0}
 .cmp{flex:1;min-width:0}
 .cmp .lbl{font-size:13px;color:var(--muted)}
 .cmp .cv{font-size:26px;font-weight:700;letter-spacing:-.03em;margin:4px 0 2px}
@@ -380,30 +381,32 @@ html,body{background:var(--bg)}
 #nav{flex:none;height:62px;border-radius:31px;padding:6px;gap:4px}
 #navKnob{top:6px;bottom:6px;left:6px;border-radius:25px;background:rgba(255,255,255,.15);box-shadow:inset 0 1px 0 rgba(255,255,255,.25);transition:transform .36s var(--ease),opacity .2s}
 .nb{flex:none;width:66px;height:50px;border-radius:25px;color:var(--muted)}
-#fab{width:62px;height:62px;border-radius:50%;color:#111;background:radial-gradient(circle at 30% 25%,#fff,color-mix(in srgb,var(--acc) 25%,#fff) 42%,var(--acc2));box-shadow:0 8px 28px color-mix(in srgb,var(--acc) 55%,transparent),inset 0 -3px 6px rgba(0,0,0,.15),inset 0 2px 2px #fff}
-#fab .ic{width:26px;height:26px;stroke-width:2.6}
+#fab{width:62px;height:62px;border-radius:50%;color:var(--accInk);background:var(--acc);box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+#fab .ic{width:26px;height:26px;stroke-width:2.4}
 #scrim{background:rgba(0,0,0,.42)}
-.sheet{left:8px;right:8px;bottom:calc(var(--sab) + 6px);border-radius:34px;padding:10px 18px 18px;background:var(--glD);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.13),inset 0 1px 0 rgba(255,255,255,.22),0 20px 60px rgba(0,0,0,.5);transform:translate3d(0,calc(100% + 40px),0);max-height:calc(92vh - var(--sab))}
+.sheet{left:8px;right:8px;bottom:calc(var(--sab) + 6px);border-radius:34px;padding:10px 18px 18px;background:var(--glD);box-shadow:inset 0 0 0 1px rgba(255,255,255,.13),inset 0 1px 0 rgba(255,255,255,.2);transform:translate3d(0,calc(100% + 40px),0);max-height:calc(92vh - var(--sab))}
 .grab{width:40px;height:5px;border-radius:3px;background:rgba(255,255,255,.28)}
-.txTop .ib,.ib.danger{background:rgba(255,255,255,.07);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.txTop .ib,.ib.danger{background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
 .ib.danger{color:var(--red)}
 #amtView .i{font-size:54px}
 #amtView .d{font-size:28px}
 .chip{border-radius:16px;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
-.chip.on{background:color-mix(in srgb,var(--acc) 26%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acc) 70%,#fff),0 0 18px color-mix(in srgb,var(--acc) 35%,transparent)}
+.chip.on{background:color-mix(in srgb,var(--acc) 24%,transparent);box-shadow:inset 0 0 0 1.5px var(--acc)}
 .field input[type=text],.dateBtn,.repBtn{border-radius:16px;background:rgba(255,255,255,.07)}
 .repBtn.on{background:color-mix(in srgb,var(--acc) 22%,transparent)}
 .key{height:56px;border-radius:18px;background:rgba(255,255,255,.06);box-shadow:inset 0 1px 0 rgba(255,255,255,.1);font-weight:600}
 .key:active{background:rgba(255,255,255,.16)}
 .btn{height:54px;border-radius:20px}
-.btn.acc{background:linear-gradient(180deg,color-mix(in srgb,var(--acc) 80%,#fff),var(--acc));text-shadow:0 1px 2px rgba(0,0,0,.18);box-shadow:0 8px 24px color-mix(in srgb,var(--acc) 45%,transparent),inset 0 1px 0 rgba(255,255,255,.5)}
+.btn.acc{background:var(--acc)}
 .btn.ghost{background:rgba(255,255,255,.08)}
 #dlg{background:rgba(0,0,0,.45)}
-#dlg .box{border-radius:30px;background:var(--glD);-webkit-backdrop-filter:blur(30px);backdrop-filter:blur(30px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.13),inset 0 1px 0 rgba(255,255,255,.22),0 20px 60px rgba(0,0,0,.5)}
-#snack{border-radius:20px;background:var(--glD);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.13),0 10px 30px rgba(0,0,0,.4);bottom:calc(var(--sab) + 92px)}
+#dlg .box{border-radius:30px;background:var(--glD);box-shadow:inset 0 0 0 1px rgba(255,255,255,.13),inset 0 1px 0 rgba(255,255,255,.2)}
+#snack{border-radius:20px;background:var(--glD);box-shadow:inset 0 0 0 1px rgba(255,255,255,.13);bottom:calc(var(--sab) + 92px)}
 #fpBtn{background:var(--gl);box-shadow:var(--ring)}
 
-.fadeUp{animation:fadeUp .36s var(--ease2) both}
+.fadeUp{animation:fadeUp .3s var(--ease2) both}
+.screen{will-change:transform,opacity;contain:layout paint}
+#bg{transform:translateZ(0)}
 @keyframes fadeUp{from{opacity:0;transform:translate3d(0,10px,0)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;transition-duration:.001ms!important}}
 </style>
@@ -510,7 +513,7 @@ html,body{background:var(--bg)}
     <button class="setRow red" id="resetBtn"><span class="l">Tout effacer</span></button>
     <input type="file" id="importFile" style="display:none">
   </div>
-  <div class="ver">Oink · v8.0</div>
+  <div class="ver">Oink · v8.1</div>
 </section>
 
 <div id="navWrap">
@@ -610,7 +613,8 @@ function load(){
   if(!Array.isArray(db.cats)||!db.cats.length)db.cats=DEFAULT_CATS.map(c=>({...c}));
   db=Object.assign({sound:true,vib:true,lock:false,remind:{on:false,freq:'daily',time:'20:00'},recapNotif:true,lastRecap:'',askedNotif:false,name:'',accent:0,budget:0,bg:0},db);
 }
-function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}scheduleSync()}
+let dataV=0;const seen={};
+function save(){dataV++;try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}scheduleSync()}
 load();
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 const catById=id=>db.cats.find(c=>c.id===id)||{name:'Sans catégorie',emoji:'',color:'#8a8a93',type:'expense'};
@@ -735,7 +739,7 @@ function go(name){
   $$('.nb').forEach(b=>b.classList.toggle('on',b.dataset.go===name));
   cur=name;placeNav();setTitle();
   $('#htitle').animate([{opacity:0,transform:'translate3d(0,6px,0)'},{opacity:1,transform:'none'}],{duration:240,easing:'cubic-bezier(.22,1,.36,1)'});
-  render(name);fx('nav','light');
+  if(seen[name]!==dataV+'|'+todayISO())render(name);fx('nav','light');
   requestAnimationFrame(placeAll);
 }
 $$('.nb').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
@@ -759,7 +763,7 @@ function budgetHTML(s,y,m){
 function txRow(t,i,withDate){
   const c=catById(t.cat),inc=t.type==='income',d=new Date(t.date+'T12:00');
   const sub=[t.note?esc(c.name):'',withDate?d.getDate()+' '+MSHORT[d.getMonth()]+(withDate===2&&d.getFullYear()!==new Date().getFullYear()?' '+d.getFullYear():''):''].filter(Boolean).join(' · ');
-  return `<div class="swipe fadeUp" style="animation-delay:${Math.min(i,10)*25}ms"><div class="swBg">${icon('trash')}Supprimer</div><div class="row" data-id="${t.id}">${avatar(c)}<div class="mid"><div class="t1">${esc(t.note||c.name)}</div>${sub||t.rec||t.from?`<div class="t2">${t.rec||t.from?'<span class="recIc">↻</span>':''}${sub||'Chaque mois'}</div>`:''}</div><div class="r num ${inc?'inc':''}">${inc?'+':'−'}${money(t.amount)}</div></div></div>`;
+  return `<div class="swipe${i<8?' fadeUp" style="animation-delay:'+i*25+'ms':''}"><div class="swBg">${icon('trash')}Supprimer</div><div class="row" data-id="${t.id}">${avatar(c)}<div class="mid"><div class="t1">${esc(t.note||c.name)}</div>${sub||t.rec||t.from?`<div class="t2">${t.rec||t.from?'<span class="recIc">↻</span>':''}${sub||'Chaque mois'}</div>`:''}</div><div class="r num ${inc?'inc':''}">${inc?'+':'−'}${money(t.amount)}</div></div></div>`;
 }
 const EMPTY=`<div class="empty">Aucun mouvement.<br>Appuie sur + pour commencer.</div>`;
 function renderHome(){
@@ -830,7 +834,7 @@ function drawCats(){
     cmp=Math.abs(p)<.5?`<div class="lbl">vs ${sPL}</div><div class="cv">Stable</div><div class="lbl num">Solde ${signed(s.bal)}</div>`:
     `<div class="lbl">vs ${sPL}</div><div class="cv num" style="color:${good?'var(--green)':'var(--red)'}">${up?'+':'−'}${Math.abs(p).toFixed(0)} %</div><div class="lbl num">soit ${fmt0.format(d)} de ${up?'plus':'moins'}</div>`}
   const rows=ids.map((k,i)=>{const c=catById(k),pc=cur[k]/tot*100;
-    return `<div class="cbar fadeUp" style="animation-delay:${Math.min(i,10)*30}ms">${avatar(c)}<div class="mid"><div class="h"><span class="t1">${esc(c.name)}</span><span class="num">${money(cur[k])}</span></div><div class="cb"><i style="--w:${Math.max(pc,2)}%;background:${c.color};box-shadow:0 0 12px ${c.color}88"></i><small class="num">${Math.round(pc)} %</small></div></div></div>`}).join('');
+    return `<div class="cbar${i<8?' fadeUp" style="animation-delay:'+i*30+'ms':''}">${avatar(c)}<div class="mid"><div class="h"><span class="t1">${esc(c.name)}</span><span class="num">${money(cur[k])}</span></div><div class="cb"><i style="--w:${Math.max(pc,2)}%;background:${c.color}"></i><small class="num">${Math.round(pc)} %</small></div></div></div>`}).join('');
   el.innerHTML=`<div class="card donutCard"><svg class="donut" viewBox="0 0 136 136">${arcs}<text x="68" y="70" text-anchor="middle" fill="#f5f5f7" font-size="19" font-weight="700" font-family="Inter" letter-spacing="-.6">${fmt0.format(tot)}</text><text x="68" y="88" text-anchor="middle" fill="rgba(235,235,245,.55)" font-size="10.5" font-weight="500" font-family="Inter">${inc?'reçus':'dépensés'}</text></svg><div class="cmp">${cmp}</div></div>
   <div class="sec"><h2>Par catégorie</h2></div><div class="card">${rows}</div>`;
   requestAnimationFrame(()=>requestAnimationFrame(()=>el.querySelectorAll('circle.s').forEach(c=>c.setAttribute('stroke-dasharray',c.dataset.d))));
@@ -891,7 +895,7 @@ function renderSet(){
   $('#lockNow').style.display=db.lock&&native?'':'none';
   requestAnimationFrame(()=>$('#remindFreq')._place());
 }
-function render(n){({home:renderHome,hist:renderHist,stats:renderStats,set:renderSet})[n||cur]()}
+function render(n){n=n||cur;seen[n]=dataV+'|'+todayISO();({home:renderHome,hist:renderHist,stats:renderStats,set:renderSet})[n]()}
 $('#budgetIn').addEventListener('focus',e=>{e.target.value=db.budget>0?String(db.budget).replace('.',','):''});
 $('#budgetIn').addEventListener('change',e=>{const v=parseFloat(e.target.value.replace(/\s|€/g,'').replace(',','.'));db.budget=v>0?Math.round(v*100)/100:0;save();fx('ok','success')});
 $('#budgetIn').addEventListener('blur',()=>setTimeout(renderSet,0));
