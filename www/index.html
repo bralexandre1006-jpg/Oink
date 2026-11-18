@@ -303,10 +303,23 @@ button.setRow:active{opacity:.55}
 html,body{background:var(--bg)}
 #bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 #bg i{position:absolute;border-radius:50%}
-#bg .b1{width:520px;height:520px;top:-230px;left:-220px;background:radial-gradient(circle,color-mix(in srgb,var(--acc) 85%,transparent),transparent 66%);opacity:.75}
-#bg .b2{width:440px;height:440px;top:140px;right:-260px;background:radial-gradient(circle,rgba(255,122,200,.5),transparent 66%)}
-#bg .b3{width:520px;height:520px;bottom:-240px;left:-200px;background:radial-gradient(circle,rgba(43,212,196,.38),transparent 66%)}
-#bg .b4{width:320px;height:320px;top:48%;left:30%;background:radial-gradient(circle,rgba(232,180,76,.16),transparent 66%)}
+#bg{--c1:color-mix(in srgb,var(--acc) 64%,transparent);--c2:rgba(255,122,200,.5);--c3:rgba(43,212,196,.38);--c4:rgba(232,180,76,.16)}
+#bg .b1{width:520px;height:520px;top:-230px;left:-220px;background:radial-gradient(circle,var(--c1),transparent 66%)}
+#bg .b2{width:440px;height:440px;top:140px;right:-260px;background:radial-gradient(circle,var(--c2),transparent 66%)}
+#bg .b3{width:520px;height:520px;bottom:-240px;left:-200px;background:radial-gradient(circle,var(--c3),transparent 66%)}
+#bg .b4{width:320px;height:320px;top:48%;left:30%;background:radial-gradient(circle,var(--c4),transparent 66%)}
+#bg i{transition:opacity .5s ease}
+#bg::before,#bg::after{content:"";position:absolute;opacity:0;transition:opacity .5s ease}
+#bg::before{inset:-24px;background:var(--img,none) center/cover no-repeat;filter:blur(7px) saturate(1.1)}
+#bg::after{inset:0;background:linear-gradient(rgba(5,5,10,.35),rgba(5,5,10,.62))}
+#bg.photo::before,#bg.photo::after{opacity:1}
+#bg.photo i{opacity:0}
+.bgRow{flex-direction:column;align-items:stretch;gap:10px;padding:12px 0}
+.bgs{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+.bgs button{aspect-ratio:3/4;border-radius:12px;background-size:cover;background-position:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);display:grid;place-items:center;color:var(--muted);transition:transform .25s var(--ease),box-shadow .2s}
+.bgs button:active{transform:scale(.92)}
+.bgs button.on{box-shadow:0 0 0 2px var(--bg),0 0 0 4px #fff}
+.bgs .ic{width:18px;height:18px}
 .glass,.card,.seg,#nav,.period button,.ib,.search{background:var(--gl);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:var(--ring),var(--drop)}
 .screen{padding-top:calc(var(--sat) + 72px)}
 #hdr{background:linear-gradient(to bottom,rgba(5,5,10,.82),rgba(5,5,10,0));border-bottom:none;min-height:calc(var(--sat) + 66px);transition:background .25s}
@@ -478,6 +491,7 @@ html,body{background:var(--bg)}
     <label class="setRow"><span class="l">Budget mensuel</span><input class="inl" id="budgetIn" type="text" inputmode="decimal" placeholder="Aucun" maxlength="9" enterkeyhint="done"></label>
     <button class="setRow" id="catsBtn"><span class="l">Catégories</span><span class="val" id="catV"></span><svg class="ic chev"><use href="#i-chevR"/></svg></button>
     <div class="setRow"><span class="l">Couleur</span><div class="accents" id="accents"></div></div>
+    <div class="setRow bgRow"><span class="l">Fond</span><div class="bgs" id="bgs"></div><input type="file" id="bgFile" accept="image/*" style="display:none"></div>
   </div>
   <div class="glabel">Préférences</div>
   <div class="card">
@@ -594,7 +608,7 @@ function load(){
   try{db=JSON.parse(localStorage.getItem(KEY))}catch(e){db=null}
   if(!db||!Array.isArray(db.tx))db={tx:[],cats:DEFAULT_CATS.map(c=>({...c}))};
   if(!Array.isArray(db.cats)||!db.cats.length)db.cats=DEFAULT_CATS.map(c=>({...c}));
-  db=Object.assign({sound:true,vib:true,lock:false,remind:{on:false,freq:'daily',time:'20:00'},recapNotif:true,lastRecap:'',askedNotif:false,name:'',accent:0,budget:0},db);
+  db=Object.assign({sound:true,vib:true,lock:false,remind:{on:false,freq:'daily',time:'20:00'},recapNotif:true,lastRecap:'',askedNotif:false,name:'',accent:0,budget:0,bg:0},db);
 }
 function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}scheduleSync()}
 load();
@@ -822,6 +836,39 @@ function drawCats(){
   requestAnimationFrame(()=>requestAnimationFrame(()=>el.querySelectorAll('circle.s').forEach(c=>c.setAttribute('stroke-dasharray',c.dataset.d))));
 }
 
+/* ================= FOND ================= */
+const BGS=[null,
+  ['rgba(37,99,235,.75)','rgba(6,182,212,.5)','rgba(14,165,233,.4)','rgba(34,211,238,.15)'],
+  ['rgba(249,115,22,.62)','rgba(236,72,153,.55)','rgba(139,92,246,.45)','rgba(251,191,36,.18)'],
+  ['rgba(16,185,129,.6)','rgba(132,204,22,.35)','rgba(13,148,136,.45)','rgba(250,204,21,.12)'],
+  ['rgba(34,197,94,.5)','rgba(168,85,247,.55)','rgba(6,182,212,.45)','rgba(240,171,252,.15)'],
+  ['transparent','transparent','transparent','transparent']];
+const BG_NAMES=['Auto','Océan','Crépuscule','Forêt','Aurore','Noir'],BGIMG='oink_bg';
+const bgImg=()=>{try{return localStorage.getItem(BGIMG)}catch(e){return null}};
+function bgPreview(i){const c=BGS[i]||['color-mix(in srgb,var(--acc) 64%,transparent)','rgba(255,122,200,.5)','rgba(43,212,196,.38)','rgba(232,180,76,.16)'];
+  return `radial-gradient(circle at 0 0,${c[0]},transparent 75%),radial-gradient(circle at 100% 45%,${c[1]},transparent 65%),radial-gradient(circle at 0 100%,${c[2]},transparent 75%),#05050a`}
+function applyBg(){
+  const el=$('#bg'),img=db.bg==='photo'&&bgImg();
+  el.classList.toggle('photo',!!img);
+  if(img)el.style.setProperty('--img',`url("${img}")`);else el.style.removeProperty('--img');
+  const c=!img&&BGS[db.bg];['--c1','--c2','--c3','--c4'].forEach((k,i)=>c?el.style.setProperty(k,c[i]):el.style.removeProperty(k));
+}
+$('#bgs').innerHTML=BG_NAMES.map((n,i)=>`<button data-b="${i}" style="background:${bgPreview(i)}" aria-label="Fond ${n}"></button>`).join('')+
+  `<button data-b="photo" aria-label="Photo de la galerie"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></svg></button>`;
+$('#bgs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fx('tap','light');
+  if(b.dataset.b==='photo'){if(db.bg!=='photo'&&bgImg()){db.bg='photo';applyBg();save();renderSet();return}external=true;$('#bgFile').click();setTimeout(()=>external=false,60000);return}
+  db.bg=+b.dataset.b;applyBg();save();renderSet()});
+$('#bgFile').addEventListener('change',e=>{external=false;const f=e.target.files[0];e.target.value='';if(!f)return;
+  const im=new Image(),u=URL.createObjectURL(f);
+  im.onload=()=>{const k=Math.min(1,1400/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
+    c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);
+    let d=c.toDataURL('image/jpeg',.82);
+    try{localStorage.setItem(BGIMG,d)}catch(_){try{d=c.toDataURL('image/jpeg',.6);localStorage.setItem(BGIMG,d)}catch(__){info('Image trop lourde','Choisis une autre photo.');return}}
+    db.bg='photo';applyBg();save();renderSet();fx('ok','success')};
+  im.onerror=()=>{URL.revokeObjectURL(u);info('Image illisible','Choisis une photo au format JPG ou PNG.')};
+  im.src=u});
+applyBg();
+
 /* ================= RÉGLAGES ================= */
 let ctFilter='expense';
 segInit($('#catSeg'),v=>{ctFilter=v;renderCatList()});
@@ -837,6 +884,7 @@ function renderSet(){
   if(document.activeElement!==$('#budgetIn'))$('#budgetIn').value=db.budget>0?fmt0.format(db.budget):'';
   $('#catV').textContent=db.cats.length;
   $$('#accents button').forEach(b=>b.classList.toggle('on',+b.dataset.i===db.accent));
+  $$('#bgs button').forEach(b=>b.classList.toggle('on',String(db.bg)===b.dataset.b));{const im=bgImg(),pb=$('#bgs [data-b="photo"]');pb.style.backgroundImage=im?`url("${im}")`:'';pb.querySelector('svg').style.display=im?'none':''}
   $('#swSound').classList.toggle('on',db.sound);$('#swVib').classList.toggle('on',db.vib);
   $('#swLock').classList.toggle('on',db.lock);$('#swRemind').classList.toggle('on',db.remind.on);$('#swRecap').classList.toggle('on',db.recapNotif);
   $('#remindOpts').style.display=db.remind.on?'':'none';$('#remindTime').value=db.remind.time;$('#remindFreq')._set(db.remind.freq);
